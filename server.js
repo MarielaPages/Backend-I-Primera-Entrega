@@ -1,5 +1,5 @@
 import express from 'express'
-import {Product, ProductManager} from './classes.js'
+import {CartManager, Product, ProductManager} from './classes.js'
 
 //Creo mi app servidor
 const app = express()
@@ -20,7 +20,9 @@ server.on('error', error => {
 }) //Manejo de errores
 
 
+//Creo los ProductManager y CartManager
 let products = new ProductManager('./productos.json')
+let carts = new CartManager('./carts.json')
 
 //Peticiones products
 app.get('/products', async (req, res) => {
@@ -52,7 +54,7 @@ app.put('/products/:pid', async (req, res) => {
     const {pid} = req.params
 
     //modifico el array, quitando el pod con ese id y colocando el nuevo con mismo id
-    await products.updateById(req.body, pid)
+    await products.updateById(req.body, parseInt(pid))
 
     res.send('the product has been updated')
 
@@ -69,3 +71,19 @@ app.delete('/products/:pid', async (req, res) => {
 })
 
 //Peticiones cart
+app.post('/carts', async (req, res) => {
+
+    await carts.createCart(req.body)
+
+    res.send('the cart has been created')
+
+})
+
+app.get('/carts/:cid', async (req, res) => {
+
+    const {cid} = req.params
+
+    let cartById = await carts.getCartById(parseInt(cid))
+
+    res.send(cartById.products)
+})

@@ -95,15 +95,15 @@ export class ProductManager{
                 let products = await this.getProducts()
 
                 //busco el producto a modificar via su id
-                let productById = products.find(item => item.id === parseInt(id))
+                let productById = products.find(item => item.id === id)
 
                 if (productById !== undefined){
                     
                     //le coloco al nuevo objeto el id, si vimos que exisitia anteriormente
-                    newProduct.id = parseInt(id)
+                    newProduct.id = id
 
                     //remuevo el producto con el id corresp para luego colocar el nuevo (con mismo id)
-                    let productsWithoutProductById = products.filter(item => item.id !== parseInt(id) )
+                    let productsWithoutProductById = products.filter(item => item.id !== id)
 
                     //coloco el nuevo producto con id incluido en el array de productos
                     productsWithoutProductById.push(newProduct)
@@ -127,7 +127,7 @@ export class ProductManager{
     async deleteById(id){
 
         try{
-            
+
             if(fs.existsSync(this.file)){
                 
             //me traigo el array de productos
@@ -149,7 +149,7 @@ export class ProductManager{
     }
 }
 
-export class cartManager{
+export class CartManager{
     constructor(file){
         this.file = file
     }
@@ -158,7 +158,7 @@ export class cartManager{
           try{
 
             //Creo un objeto con los productos pasados que hara referencia al carrito
-            let cart = {products: products}
+            let cart = {products: products} //la idea es que products sera el array the productos a poner en el carrito
 
             //chequeo si el archivo con la lista de productos existe y si no existe la creo vacia
             if(!fs.existsSync(this.file)){
@@ -220,4 +220,5 @@ export class cartManager{
             throw err
         }
     }
+
 }
