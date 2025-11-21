@@ -158,7 +158,7 @@ export class CartManager{
           try{
 
             //Creo un objeto con los productos pasados que hara referencia al carrito
-            let cart = {products: products} //la idea es que products sera el array the productos a poner en el carrito
+            let cart = {products: products || []} //la idea es que products sera el array the productos a poner en el carrito
 
             //chequeo si el archivo con la lista de productos existe y si no existe la creo vacia
             if(!fs.existsSync(this.file)){
@@ -219,6 +219,65 @@ export class CartManager{
         }catch(err){
             throw err
         }
+    }
+
+    async addProductToCart(cid, pid, quantity){
+
+        try{
+
+            //chequeo si el archivo con la lista de productos existe y si no existe la creo vacia
+            if(!fs.existsSync(this.file)){
+                await fs.promises.writeFile(`${this.file}`, '[]')
+            }
+
+            //leo los datos guardados en el archivo
+            let carts = await fs.promises.readFile(`${this.file}`, 'utf-8')
+            //Lo parseo para poder trabajar con los objetos del array en formato JS
+            let cartsArray = JSON.parse(carts)
+
+            //busco el carrito correspondiente al id pasado
+            let foundCart = cartsArray.find(item => item.id === cid)
+
+            //Dentro de products en cart busco el producto con el id pasado y si no existe, lo creo
+            let foundProduct = foundCart.products.find(item => item.product === pid)
+            
+            //incializo una variable donde iran todos los productos del carrito correspondiente
+            let productsForNewQuantityInIdProduct
+
+            if(foundProduct !== undefined){
+                foundProduct.quantity = foundProduct.quantity + quantity
+
+                //la idea es que el objeto tiene la forma {product: id, quantity: quantity}
+
+                //Quito el producto para volver a guardarlo con su nueva cantidad
+                productsForNewQuantityInIdProduct = foundCart.products.filter(item => item.product !== pid)
+
+                productsForNewQuantityInIdProduct.push(foundProduct)
+
+            }else{
+                let newProductIfUndefined = {}
+                newProductIfUndefined.quantity = quantity 
+                newProductIfUndefined.id = pid
+
+                //Guardo el nuevo producto con su cantidad en la seccion de productos del carrito correspondiente
+                productsForNewQuantityInIdProduct = foundCart.products
+                productsForNewQuantityInIdProduct.push(newProductIfUndefined)
+            }
+
+            //Quito el carrito que use para cambiar la cantidad de productos de forma que luego agrego los productos con la nueva cantidad
+            let cartsForNewQuantityInProduct = cartsArray.filter(item => item.id !== cid)
+
+            let obj = {products: productsForNewQuantityInIdProduct, id:cid}
+
+            cartsForNewQuantityInProduct.push(obj)
+
+            await fs.promises.writeFile(`${this.file}`, JSON.stringify(cartsForNewQuantityInProduct))
+
+        }catch(err){
+            throw err
+        }
+
+
     }
 
 }

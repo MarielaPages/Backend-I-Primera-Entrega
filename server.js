@@ -87,3 +87,16 @@ app.get('/carts/:cid', async (req, res) => {
 
     res.send(cartById.products)
 })
+
+app.post('/:cid/product/:pid', async (req, res) => {
+
+    const {cid, pid} = req.params
+    
+    const {quantity} = req.body
+    
+    await carts.addProductToCart(parseInt(cid), parseInt(pid), parseInt(quantity))  
+    
+    res.send('the products have been added correctly') 
+
+
+})
