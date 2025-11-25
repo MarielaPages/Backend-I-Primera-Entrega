@@ -257,7 +257,7 @@ export class CartManager{
             }else{
                 let newProductIfUndefined = {}
                 newProductIfUndefined.quantity = quantity 
-                newProductIfUndefined.id = pid
+                newProductIfUndefined.product = pid
 
                 //Guardo el nuevo producto con su cantidad en la seccion de productos del carrito correspondiente
                 productsForNewQuantityInIdProduct = foundCart.products
