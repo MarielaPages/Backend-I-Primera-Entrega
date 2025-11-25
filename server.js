@@ -25,13 +25,13 @@ let products = new ProductManager('./productos.json')
 let carts = new CartManager('./carts.json')
 
 //Peticiones products
-app.get('/products', async (req, res) => {
+app.get('/api/products', async (req, res) => {
 
     res.send(await products.getProducts())
 
 })
 
-app.get('/products/:pid', async(req, res) => {
+app.get('/api/products/:pid', async(req, res) => {
     
     const {pid} = req.params
 
@@ -39,7 +39,7 @@ app.get('/products/:pid', async(req, res) => {
 
 })
 
-app.post('/products', async (req, res) => {
+app.post('/api/products', async (req, res) => {
 
     let product = new Product(req.body.title, req.body.description, req.body.price, req.body.thumbnail, req.body.code, req.body.stock)
 
@@ -49,7 +49,7 @@ app.post('/products', async (req, res) => {
 
 })
 
-app.put('/products/:pid', async (req, res) => {
+app.put('/api/products/:pid', async (req, res) => {
     
     const {pid} = req.params
 
@@ -60,7 +60,7 @@ app.put('/products/:pid', async (req, res) => {
 
 })
 
-app.delete('/products/:pid', async (req, res) => {
+app.delete('/api/products/:pid', async (req, res) => {
     
     const {pid} = req.params
 
@@ -71,7 +71,7 @@ app.delete('/products/:pid', async (req, res) => {
 })
 
 //Peticiones cart
-app.post('/carts', async (req, res) => {
+app.post('/api/carts', async (req, res) => {
 
     await carts.createCart(req.body)
 
@@ -79,7 +79,7 @@ app.post('/carts', async (req, res) => {
 
 })
 
-app.get('/carts/:cid', async (req, res) => {
+app.get('/api/carts/:cid', async (req, res) => {
 
     const {cid} = req.params
 
@@ -88,7 +88,7 @@ app.get('/carts/:cid', async (req, res) => {
     res.send(cartById.products)
 })
 
-app.post('/:cid/product/:pid', async (req, res) => {
+app.post('/api/:cid/product/:pid', async (req, res) => {
 
     const {cid, pid} = req.params
     
