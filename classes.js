@@ -35,7 +35,7 @@ export class ProductManager{
                     product.id = 1
                 }else{
 
-                    product.id = productsArray[productsArray.length -1].id + 1 
+                    product.id = productsArray.sort((a, b) => a.id - b.id)[productsArray.length -1].id + 1 
                 }
 
                 productsArray.push(product)
@@ -175,7 +175,7 @@ export class CartManager{
                 cart.id = 1
             }else{
 
-                cart.id = cartsArray[cartsArray.length -1].id + 1 
+                cart.id = cartsArray.sort((a, b) => a.id - b.id)[cartsArray.length -1].id + 1 
             }
 
             cartsArray.push(cart)

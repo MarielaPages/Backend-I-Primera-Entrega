@@ -35,7 +35,7 @@ app.get('/api/products/:pid', async(req, res) => {
     
     const {pid} = req.params
 
-    res.send(await products.getProductById(pid))
+    res.send(await products.getProductById(parseInt(pid)))
 
 })
 
@@ -88,7 +88,7 @@ app.get('/api/carts/:cid', async (req, res) => {
     res.send(cartById.products)
 })
 
-app.post('/api/:cid/product/:pid', async (req, res) => {
+app.post('/api/carts/:cid/product/:pid', async (req, res) => {
 
     const {cid, pid} = req.params
     
