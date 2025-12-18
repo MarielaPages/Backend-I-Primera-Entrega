@@ -61,7 +61,7 @@ export class ProductManager{
             }
             return []
         }catch(err){
-            throw new err
+            throw err
         }
     }
     
@@ -196,7 +196,7 @@ export class CartManager{
             }
             return []
         }catch(err){
-            throw new err
+            throw err
         }
     }
 
